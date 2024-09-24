@@ -53,7 +53,7 @@ def signup(request):
 def recommend_movie(request):
     search_term = request.GET.get('searchMovie', '')  # Obtener el prompt del formulario
     recommended_movies = []
-
+    recommended_titles = []
     if search_term:
         embedding_prompt = get_embedding(search_term)  # Generar el embedding del prompt
 
@@ -66,8 +66,11 @@ def recommend_movie(request):
         sorted_indices = np.argsort(similarities)[::-1]
 
         for idx in sorted_indices[:1]:
-            recommended_movies.append(movies_with_embeddings[idx])
+            recommended_titles.append(movies_with_embeddings[idx]['title'])
 
+        recommended_movies = Movie.objects.filter(title__in=recommended_titles)
+
+        recommended_movies = sorted(recommended_movies, key=lambda movie: recommended_titles.index(movie.title))
     return render(request, 'recommend.html', {'searchTerm': search_term, 'movies': recommended_movies})
 
 

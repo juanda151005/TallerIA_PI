@@ -22,6 +22,7 @@
                 <p class="card-text">{{ movie.description}}</p>
                 <p class="card-text">{{ movie.genre}}</p>
                 <p class="card-text">{{ movie.year}}</p>
+
                 {% if movie.url %}
                      <a href="{{ movie.url }}" class="btn btn-primary">Movie Link</a>
                 {% endif %}
